@@ -1,0 +1,109 @@
+﻿@model IList<AnkkBoard.Web.Models.VM.TaskViewModel>
+
+<div id="tasks" class="column">
+    <h3 class="text-center">
+        Tasks
+    </h3>
+</div>
+
+<div id="in-progress" class="column">
+    <h3 class="text-center">
+        In Progress
+    </h3>
+</div>
+
+<div id="fixed" class="column">
+    <h3 class="text-center">
+        Fixed
+    </h3>
+</div>
+
+<div id="testing-phase" class="column">
+    <h3 class="text-center">
+        Testing Phase
+    </h3>
+</div>
+
+@section scripts {
+    <script>       
+        $(".column").sortable({
+            connectWith: ".column",
+            handle: ".portlet-header",
+            cancel: ".portlet-toggle",
+            placeholder: "portlet-placeholder ui-corner-all",
+            update: function(event, ui) {
+                if (this === ui.item.parent()[0]) {
+                    var getTaskId = $(ui.item).find('.task-id').val();
+                    var getParentId = $(ui.item).parent().prop('id');
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ChangeTaskStatus", "Home")',
+                        data: { taskId: getTaskId, status: getParentId },
+                        success: function (data) {
+                            window.location.reload();
+                        }
+                    });
+
+                    console.log($(ui.item));
+                }
+            }
+        });
+
+        $( ".portlet" )
+          .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+          .find( ".portlet-header" )
+            .addClass( "ui-widget-header ui-corner-all" )
+            .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+
+        $( ".portlet-toggle" ).click(function() {
+            var icon = $( this );
+            icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
+            icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+        });      
+
+        var model = @Html.Raw(Json.Encode(Model));
+
+        for (var i = 0; i < model.length; i++) {            
+            var taskContainer = $('<div />').addClass('portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all');
+
+            var taskId = $('<input class="task-id" type="hidden"/>').val(model[i].Id);
+            taskId.appendTo(taskContainer);
+            var taskTitle = $('<div />').addClass('portlet-header ui-widget-header ui-corner-all ui-sortable-handle').text(model[i].Title);
+            taskTitle.appendTo(taskContainer);
+            var taskContent = $('<div />').addClass('portlet-content').text(model[i].Description);
+            taskContent.appendTo(taskContainer);
+            var taskCreator = $('<div />').html("Created by " + checkName(model[i].Creator));
+            taskCreator.appendTo(taskContainer);
+            var taskAssigner = $('<div />').html("Assign to " + checkName(model[i].Assigner));
+            taskAssigner.appendTo(taskContainer);
+
+            var taskStatus = model[i].TaskStatus;
+
+            if (taskStatus == 0) {
+                $('#tasks').append(taskContainer);
+            } else if (taskStatus == 1) {
+                $('#in-progress').append(taskContainer);
+            } else if (taskStatus == 2) {
+                $('#fixed').append(taskContainer);
+            } else if (taskStatus == 3) {
+                $('#testing-phase').append(taskContainer);
+            }
+        }
+        
+        function checkName(nameId) {
+            var name = '';
+
+            if (nameId === '1') {
+                name = '<span style="background-color: #CC0000"> AK <span>';
+            } else if (nameId === '2') {
+                name = '<span style="background-color: #00CCCC"> MK <span>';
+            } else if (nameId === '3') {
+                name = '<span style="background-color: #009900"> SG <span>';
+            } else if (nameId === '4') {
+                name = '<span style="background-color: #CCCC00"> TD <span>';
+            }
+
+            return name;
+        }
+    </script>
+}
