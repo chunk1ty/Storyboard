@@ -15,5 +15,7 @@
         public string Assigner { get; set; }
 
         public TaskStatus Status { get; set; }
+
+        public TaskPriority Priority { get; set; }
     }
 }

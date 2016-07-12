@@ -40,7 +40,8 @@
                         Description = x.Description,
                         Title = x.Title,
                         Id = x.Id,
-                        TaskStatus = x.Status
+                        TaskStatus = x.Status,
+                        Priority = x.Priority
                     })
                   .ToList();
 
@@ -69,6 +70,7 @@
             taskDb.Creator = taskVM.Creator;
             taskDb.Assigner = taskVM.Assigner;
             taskDb.Status = TaskStatus.Task;
+            taskDb.Priority = taskVM.Priority;
 
             dbContext.TasksB.Add(taskDb);
             dbContext.SaveChanges();
@@ -87,6 +89,85 @@
 
             ViewBag.MovieType = items;
 
+
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "TeamVokil")]
+        public ActionResult EditTask(int id)
+        {
+            if (!ModelState.IsValid || id <= 0)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            var taskDBM = dbContext.TasksB.Find(id);
+
+            if (taskDBM == null)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            var taskVM = new TaskViewModel();
+            taskVM.Id = taskDBM.Id;
+            taskVM.Title = taskDBM.Title;
+            taskVM.Assigner = taskDBM.Assigner;
+            taskVM.Creator = taskDBM.Creator;
+            taskVM.Description = taskDBM.Description;
+            taskVM.TaskStatus = taskDBM.Status;
+            taskVM.Priority = taskDBM.Priority;
+
+            return View(taskVM);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "TeamVokil")]
+        public ActionResult EditTask(TaskViewModel taskVM)
+        {
+            if (taskVM.Assigner == "0" || taskVM.Creator == "0" || !ModelState.IsValid)
+            {
+                return this.View(taskVM);
+            }
+
+            dbContext.TasksB
+                .Where(t => t.Id == taskVM.Id)
+                .Update(t => new TaskB
+                {                   
+                    Title = taskVM.Title,
+                    Description = taskVM.Description,
+                    Creator = taskVM.Creator,
+                    Assigner = taskVM.Assigner,
+                    Status = taskVM.TaskStatus,
+                    Priority = taskVM.Priority
+             });
+
+            dbContext.SaveChanges();
+
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "TeamVokil")]
+        public ActionResult DeleteTask(int id)
+        {
+            if (!ModelState.IsValid || id <= 0)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            var taskDBM = dbContext.TasksB.Find(id);
+
+            if (taskDBM == null)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            dbContext.TasksB
+                .Where(t => t.Id == id)
+                .Delete();
+
+            dbContext.SaveChanges();
 
             return this.RedirectToAction("Index");
         }

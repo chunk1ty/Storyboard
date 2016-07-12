@@ -62,3 +62,7 @@ textarea {
 .container {
     max-width: 1500px;
 }
+
+.ui-widget-content a  {
+    color: #ffffff !important;
+}

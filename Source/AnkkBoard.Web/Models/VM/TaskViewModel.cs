@@ -13,5 +13,7 @@
         public int Id { get; set; }
 
         public TaskStatus TaskStatus { get; set; }
+
+        public TaskPriority Priority { get; set; }
     }
 }
