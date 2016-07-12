@@ -13,6 +13,7 @@ namespace AnkkBoard.Web.Migrations
         public Configuration()
         {
            this.AutomaticMigrationsEnabled = true;
+            //this.AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(AnkkBoard.Web.Models.ApplicationDbContext context)
