@@ -9,7 +9,7 @@
     using System;
     using System.Collections.Generic;
 
-    
+
     public class HomeController : Controller
     {
         private ApplicationDbContext dbContext;
@@ -27,7 +27,6 @@
         }
 
         [Authorize(Roles = "TeamVokil")]
-        // Get all tasks
         public ActionResult Index()
         {
             var allTasks = dbContext
@@ -43,9 +42,36 @@
                         TaskStatus = x.Status,
                         Priority = x.Priority
                     })
+                  .Where(x => x.TaskStatus != TaskStatus.Done)
+                  .OrderBy(x => x.Assigner)
+                  .ThenBy(x => x.Priority)
                   .ToList();
 
-            return View(allTasks);
+            return this.View(allTasks);
+        }
+
+        [Authorize(Roles = "TeamVokil")]
+        public ActionResult DoneTasks()
+        {
+            var allTasks = dbContext
+                .TasksB
+                .Select(
+                    x => new TaskViewModel
+                    {
+                        Assigner = x.Assigner,
+                        Creator = x.Creator,
+                        Description = x.Description,
+                        Title = x.Title,
+                        Id = x.Id,
+                        TaskStatus = x.Status,
+                        Priority = x.Priority
+                    })
+                  .Where(x => x.TaskStatus == TaskStatus.Done)
+                  .OrderBy(x => x.Assigner)
+                  .ThenBy(x => x.Priority)
+                  .ToList();
+
+            return this.View(allTasks);
         }
 
         [HttpGet]
@@ -133,14 +159,14 @@
             dbContext.TasksB
                 .Where(t => t.Id == taskVM.Id)
                 .Update(t => new TaskB
-                {                   
+                {
                     Title = taskVM.Title,
                     Description = taskVM.Description,
                     Creator = taskVM.Creator,
                     Assigner = taskVM.Assigner,
                     Status = taskVM.TaskStatus,
                     Priority = taskVM.Priority
-             });
+                });
 
             dbContext.SaveChanges();
 
@@ -199,6 +225,10 @@
             {
                 taskStatus = TaskStatus.TestingPhase;
             }
+            else if (status == "done")
+            {
+                taskStatus = TaskStatus.Done;
+            }
             else
             {
                 throw new ArgumentNullException("Task status cannot be null!");
@@ -214,6 +244,11 @@
         [Authorize]
         public ActionResult Nothing()
         {
+            if (User.IsInRole("TeamVokil"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
     }

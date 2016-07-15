@@ -280,6 +280,7 @@
     <Content Include="Views\Home\Nothing.cshtml" />
     <Content Include="Views\Home\EditTask.cshtml" />
     <Content Include="Views\Home\EditorTemplates\TaskViewModel.cshtml" />
+    <Content Include="Views\Home\DoneTasks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

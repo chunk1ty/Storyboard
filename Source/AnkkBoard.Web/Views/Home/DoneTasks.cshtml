@@ -33,28 +33,20 @@
     </div>
 </div>*@
 
-<div id="tasks" class="column">
-    <h3 class="text-center">
-        Tasks
-    </h3>
+<div id="column-1" class="column">
+   
 </div>
 
-<div id="in-progress" class="column">
-    <h3 class="text-center">
-        In Progress
-    </h3>
+<div id="column-2" class="column">
+    
 </div>
 
-<div id="fixed" class="column">
-    <h3 class="text-center">
-        Fixed
-    </h3>
+<div id="column-3" class="column">
+   
 </div>
 
-<div id="testing-phase" class="column">
-    <h3 class="text-center">
-        Testing Phase
-    </h3>
+<div id="column-4" class="column">
+    
 </div>
 
 @section scripts {
@@ -64,7 +56,7 @@
             handle: ".portlet-header",
             cancel: ".portlet-toggle",
             placeholder: "portlet-placeholder ui-corner-all",
-            update: function(event, ui) {
+            @*update: function(event, ui) {
                 if (this === ui.item.parent()[0]) {
                     var getTaskId = $(ui.item).find('.task-id').val();
                     var getParentId = $(ui.item).parent().prop('id');
@@ -77,7 +69,7 @@
                         }
                     });
                 }
-            }
+            }*@
         });
 
         $( ".portlet" )
@@ -108,25 +100,25 @@
             var taskAssigner = $('<div />').html("Assign to " + checkName(model[i].Assigner));
             taskAssigner.appendTo(taskContainer);
 
-            var buttonContainer = $('<div />');
-            var editBtn = $('<a class="btn btn-primary btn-xs">Edit</a>').attr('href', '/Home/EditTask/' + model[i].Id);
-            editBtn.appendTo(buttonContainer);
-            var deleteBtn = $('<a class="done-btn btn btn-primary btn-xs" style="margin-left: 5px; margin-right: 5px">Done</a>');
-            deleteBtn.appendTo(buttonContainer);
-            var moveToDoneBtn = $('<span class="delete-btn btn btn-danger btn-xs">Delete</span>');
-            moveToDoneBtn.appendTo(buttonContainer);
-            buttonContainer.appendTo(taskContainer);
+            //var buttonContainer = $('<div />');
+            //var editBtn = $('<a class="btn btn-primary btn-xs">Edit</a>').attr('href', '/Home/EditTask/' + model[i].Id);
+            //editBtn.appendTo(buttonContainer);
+            //var deleteBtn = $('<a class="btn btn-primary btn-xs" style="margin-left: 5px; margin-right: 5px">Move to Done</a>');
+            //deleteBtn.appendTo(buttonContainer);
+            //var moveToDoneBtn = $('<span class="delete-btn btn btn-danger btn-xs">Delete</span>');
+            //moveToDoneBtn.appendTo(buttonContainer);
+            //buttonContainer.appendTo(taskContainer);
 
-            var taskStatus = model[i].TaskStatus;
-
-            if (taskStatus == 0) {
-                $('#tasks').append(taskContainer);
-            } else if (taskStatus == 1) {
-                $('#in-progress').append(taskContainer);
-            } else if (taskStatus == 2) {
-                $('#fixed').append(taskContainer);
-            } else if (taskStatus == 3) {
-                $('#testing-phase').append(taskContainer);
+            //var taskStatus = model[i].TaskStatus;
+            
+            if (i % 4 === 0) {
+                $('#column-1').append(taskContainer);
+            } else if (i % 4 === 1) {
+                $('#column-2').append(taskContainer);
+            } else if (i % 4 === 2) {
+                $('#column-3').append(taskContainer);
+            } else if (i % 4 === 3) {
+                $('#column-4').append(taskContainer);
             }
         }
 
@@ -149,8 +141,7 @@
         }
 
         function checkPriority(priorityId) {
-            var priority = '';
-            //debugger;
+            var priority = '';           
             if (priorityId == '1') {
                 priority = '<span style="background-color: #E75B73"> H </span>';
             } else if (priorityId == '2') {
@@ -162,7 +153,7 @@
             return priority;
         }
 
-        $('.delete-btn').on('click', function ( ) {
+        @*$('.delete-btn').on('click', function ( ) {
             var taskId = $(this)
                 .closest('.portlet')
                 .children()
@@ -183,29 +174,6 @@
                     }
                 });
             }
-        });
-
-        $('.done-btn').on('click', function ( ) {
-            var taskId = $(this)
-                .closest('.portlet')
-                .children()
-                .first()
-                .val();
-           
-            if (taskId != null || taskId != undefined) {
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("ChangeTaskStatus", "Home")',
-                    data: { taskId: taskId, status: "done" },
-                    success: function () {
-                        alert("Move to done completed!");
-                        window.location.reload();
-                    },
-                    error: function (ex) {
-                        alert('Move to done uncompleted!');
-                    }
-                });
-            }
-        });
+        });*@
     </script>
 }

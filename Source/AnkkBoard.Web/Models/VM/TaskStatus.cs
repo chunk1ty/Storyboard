@@ -5,6 +5,7 @@
         Task,
         InProgress,
         Fixed,
-        TestingPhase
+        TestingPhase,
+        Done
     }
 }
