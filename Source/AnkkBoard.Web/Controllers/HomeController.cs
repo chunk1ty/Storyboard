@@ -17,8 +17,11 @@
         {
             { 1, "Andriyan Krastev" },
             { 2, "Milen Kozhuharov" },
-            { 3, "Svetoslav Georgiev" },
-            { 4, "Teodor Dochev" }
+            { 3, "Svetoslav A Georgiev" },
+            { 4, "Svetoslav V Georgiev" },
+            { 5, "Teodor Dochev" },
+            { 6, "Dinka Ivanova" },
+            { 7, "Nataliya Ilieva" }
         };
 
         public HomeController()
@@ -102,19 +105,6 @@
             dbContext.SaveChanges();
 
             ViewBag.TeamMembers = teamMembers;
-
-            List<SelectListItem> items = new List<SelectListItem>();
-
-            items.Add(new SelectListItem { Text = "Action", Value = "0" });
-
-            items.Add(new SelectListItem { Text = "Drama", Value = "1" });
-
-            items.Add(new SelectListItem { Text = "Comedy", Value = "2", Selected = true });
-
-            items.Add(new SelectListItem { Text = "Science Fiction", Value = "3" });
-
-            ViewBag.MovieType = items;
-
 
             return this.RedirectToAction("Index");
         }

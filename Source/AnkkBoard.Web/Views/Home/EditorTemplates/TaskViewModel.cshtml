@@ -23,7 +23,7 @@
                   0),
                   new { @class = "form-control col-md-7 col-xs-12" }
                    )
-        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.Priority, null, new { @class = "text-danger" })
     </div>
 </div>
 
@@ -31,10 +31,11 @@
     @Html.LabelFor(m => m.Description, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
     <div class="col-md-6 col-sm-6 col-xs-12">
         @Html.TextAreaFor(m => m.Description, 15, 20, new { @class = "form-control col-md-7 col-xs-12" })
-        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
     </div>
 </div>
 
+@* Checkpoint: add new user*@
 <div class="form-group">
     @Html.LabelFor(m => m.Creator, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -45,34 +46,39 @@
                        new { value = 2 , text = "Milen Kozhuharov" },
                        new { value = 3 , text = "Svetoslav A. Georgiev"},
                        new { value = 4 , text = "Svetoslav V. Georgiev"},
-                       new { value = 5 , text = "Teodor Dochev"}
+                       new { value = 5 , text = "Teodor Dochev"},
+                       new { value = 6 , text = "Dinka Ivanova"},
+                       new { value = 7 , text = "Nataliya Ilieva"}
                     },
                   "value",
                   "text",
                   0),
                   new { @class = "form-control col-md-7 col-xs-12" }
                    )
-        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.Creator, null, new { @class = "text-danger" })
     </div>
 </div>
 
+@* Checkpoint: add new user*@
 <div class="form-group">
     @Html.LabelFor(m => m.Assigner, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
     <div class="col-md-6 col-sm-6 col-xs-12">
         @Html.DropDownListFor(m => m.Assigner, new SelectList(
                   new List<Object>{
-                       new { value = 0 , text = "---Select Creator---"  },
+                       new { value = 0 , text = "---Select Assigner---"  },
                        new { value = 1 , text = "Andriyan Krastev"  },
                        new { value = 2 , text = "Milen Kozhuharov" },
                        new { value = 3 , text = "Svetoslav A. Georgiev"},
                        new { value = 4 , text = "Svetoslav V. Georgiev"},
-                       new { value = 5 , text = "Teodor Dochev"}
+                       new { value = 5 , text = "Teodor Dochev"},
+                       new { value = 6 , text = "Dinka Ivanova"},
+                       new { value = 7 , text = "Nataliya Ilieva"}
                     },
                   "value",
                   "text",
                   0),
                   new { @class = "form-control col-md-7 col-xs-12" }
                    )
-        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.Assigner, null, new { @class = "text-danger" })
     </div>
 </div>
