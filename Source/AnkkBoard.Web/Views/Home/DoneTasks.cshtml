@@ -100,14 +100,14 @@
             var taskAssigner = $('<div />').html("Assign to " + checkName(model[i].Assigner));
             taskAssigner.appendTo(taskContainer);
 
-            //var buttonContainer = $('<div />');
-            //var editBtn = $('<a class="btn btn-primary btn-xs">Edit</a>').attr('href', '/Home/EditTask/' + model[i].Id);
-            //editBtn.appendTo(buttonContainer);
+            var buttonContainer = $('<div />');
+            var restoreBtn = $('<span class="restore-btn btn btn-primary btn-xs">Restore</span>');
+            restoreBtn.appendTo(buttonContainer);
             //var deleteBtn = $('<a class="btn btn-primary btn-xs" style="margin-left: 5px; margin-right: 5px">Move to Done</a>');
             //deleteBtn.appendTo(buttonContainer);
             //var moveToDoneBtn = $('<span class="delete-btn btn btn-danger btn-xs">Delete</span>');
             //moveToDoneBtn.appendTo(buttonContainer);
-            //buttonContainer.appendTo(taskContainer);
+            buttonContainer.appendTo(taskContainer);
 
             //var taskStatus = model[i].TaskStatus;
             
@@ -135,6 +135,10 @@
                 name = '<span style="background-color: #C0C0C0"> SVG <span>';
             } else if (nameId === '5') {
                 name = '<span style="background-color: #CCCC00"> TD <span>';
+            } else if (nameId === '6') {
+                name = '<span style="background-color: #CC00CC"> DI <span>';
+            } else if (nameId === '7') {
+                name = '<span style="background-color: #FF66B2"> NI <span>';
             }
 
             return name;
@@ -153,7 +157,7 @@
             return priority;
         }
 
-        @*$('.delete-btn').on('click', function ( ) {
+        $('.restore-btn').on('click', function ( ) {
             var taskId = $(this)
                 .closest('.portlet')
                 .children()
@@ -163,17 +167,17 @@
             if (taskId != null || taskId != undefined) {
                 $.ajax({
                     type: 'POST',
-                    url: '@Url.Action("DeleteTask", "Home")',
-                    data: { id: taskId },
+                    url: '@Url.Action("ChangeTaskStatus", "Home")',
+                    data: { taskId: taskId, status:'tasks' },
                     success: function () {
-                        alert("Delete completed!");
+                        alert("Task restored!");
                         window.location.reload();
                     },
                     error: function (ex) {
-                        alert('Delete uncompleted!');
+                        alert('Task unrestored!');
                     }
                 });
             }
-        });*@
+        });
     </script>
 }
